@@ -12,8 +12,6 @@ namespace PieShop.Controllers
 {
 	public class PiesController : Controller
 	{
-		private ApplicationDbContext _context;
-
 		private readonly IPieRepository pieRepository;
 		private readonly ICategoryRepository categoryRepository;
 

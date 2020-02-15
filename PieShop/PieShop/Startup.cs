@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PieShop.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace PieShop
 {
@@ -36,12 +37,17 @@ namespace PieShop
 					options => options.SignIn.RequireConfirmedAccount = true)
 				.AddEntityFrameworkStores<ApplicationDbContext>();
 
-			services.AddTransient<ICategoryRepository, MockCategoryRepository>();
-			services.AddTransient<IPieRepository, MockPieRepository>();
+			services.AddTransient<ICategoryRepository, CategoryRepository>();
+			services.AddTransient<IPieRepository, PieRepository>();
+			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+			services.AddScoped<ShoppingCart>(sp => ShoppingCart.GetCard(sp));
 
 			services.AddControllersWithViews();
 			services.AddRazorPages();
 			services.AddMvc();
+
+			services.AddMemoryCache();
+			services.AddSession();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,6 +69,7 @@ namespace PieShop
 			app.UseStaticFiles();
 			app.UseRouting();
 
+			app.UseSession();
 			app.UseAuthentication();
 			app.UseAuthorization();
 
@@ -72,6 +79,7 @@ namespace PieShop
 					pattern: "{controller=Home}/{action=Index}/{id?}");
 				endpoints.MapRazorPages();
 			});
+
 		}
 	}
 }

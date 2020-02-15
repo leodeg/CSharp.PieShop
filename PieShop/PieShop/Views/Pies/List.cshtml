@@ -9,17 +9,7 @@
 	<div class="row">
 		@foreach (var pie in Model.Pies)
 		{
-			<div class="col-sm-6 col-md-6 col-lg-6 col-12 mt-2">
-				<div class="img-thumbnail">
-					<img class="img-fluid rounded" src="@pie.ImageThumbnailUrl" alt="Pie Image Preview" />
-
-					<div class="figure-caption">
-						<h3 class="float-right">@pie.Price.ToString("c")</h3>
-						<h3><a href="#">@pie.Name</a></h3>
-						<p>@pie.ShortDescription</p>
-					</div>
-				</div>
-			</div>
+			<partial name="_PieOverviewPartial" model="@pie" />
 		}
 	</div>
 </div>
