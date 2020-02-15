@@ -12,6 +12,7 @@ using PieShop.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PieShop.Models;
 
 namespace PieShop
 {
@@ -31,10 +32,16 @@ namespace PieShop
 				options.UseSqlServer(
 					Configuration.GetConnectionString("DefaultConnection")));
 
-			services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+			services.AddDefaultIdentity<IdentityUser>(
+					options => options.SignIn.RequireConfirmedAccount = true)
 				.AddEntityFrameworkStores<ApplicationDbContext>();
+
+			services.AddTransient<ICategoryRepository, MockCategoryRepository>();
+			services.AddTransient<IPieRepository, MockPieRepository>();
+
 			services.AddControllersWithViews();
 			services.AddRazorPages();
+			services.AddMvc();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
