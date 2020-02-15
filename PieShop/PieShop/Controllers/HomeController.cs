@@ -7,21 +7,29 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PieShop.Models;
+using PieShop.ViewModels;
 
 namespace PieShop.Controllers
 {
 	public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
+		private readonly IPieRepository _pieRepository;
 
-		public HomeController(ILogger<HomeController> logger)
+		public HomeController(ILogger<HomeController> logger, IPieRepository pieRepository)
 		{
 			_logger = logger;
+			_pieRepository = pieRepository;
 		}
 
 		public IActionResult Index()
 		{
-			return View();
+			HomeViewModel homeView = new HomeViewModel
+			{
+				PiesOfTheWeek = _pieRepository.PiesOfTheWeek
+			};
+
+			return View(homeView);
 		}
 
 		public IActionResult Privacy()
