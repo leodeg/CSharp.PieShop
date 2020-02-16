@@ -39,6 +39,8 @@ namespace PieShop
 
 			services.AddTransient<ICategoryRepository, CategoryRepository>();
 			services.AddTransient<IPieRepository, PieRepository>();
+			services.AddTransient<IOrderRepository, OrderRepository>();
+
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 			services.AddScoped<ShoppingCart>(sp => ShoppingCart.GetCard(sp));
 
@@ -79,7 +81,6 @@ namespace PieShop
 					pattern: "{controller=Home}/{action=Index}/{id?}");
 				endpoints.MapRazorPages();
 			});
-
 		}
 	}
 }

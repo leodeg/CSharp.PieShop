@@ -6,8 +6,10 @@
 
 @await Html.PartialAsync("_Carousel")
 
-<h2>Pies of the Week</h2>
-<h4>Out weekly selection - just for you!</h4>
+<div class="container mt-4">
+	<h2>Pies of the Week</h2>
+	<h4>Out weekly selection - just for you!</h4>
+</div>
 
 <div class="row">
 	@foreach (var pie in Model.PiesOfTheWeek)
