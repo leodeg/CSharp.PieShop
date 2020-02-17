@@ -32,21 +32,22 @@ namespace PieShop.Controllers
 			return View(shoppingCartVM);
 		}
 
-		public RedirectToActionResult AddToShoppingCart(int pieId)
+		public RedirectToActionResult AddToShoppingCart(int id)
 		{
 			var selectedPie = _pieRepository.Pies
-				.FirstOrDefault(p => p.Id == pieId);
+				.FirstOrDefault(p => p.Id == id);
 
 			if (selectedPie != null)
 				_shoppingCart.AddToCart(selectedPie, 1);
+			else return RedirectToAction("Error");
 
 			return RedirectToAction("Index");
 		}
 
-		public RedirectToActionResult RemoveFromShoppingCart(int pieId)
+		public RedirectToActionResult RemoveFromShoppingCart(int id)
 		{
 			var selectedPie = _pieRepository.Pies
-				.FirstOrDefault(p => p.Id == pieId);
+				.FirstOrDefault(p => p.Id == id);
 
 			if (selectedPie != null)
 				_shoppingCart.RemoveFromCart(selectedPie);

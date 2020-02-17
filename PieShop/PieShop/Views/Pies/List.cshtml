@@ -1,15 +1,58 @@
-﻿@model PieShop.ViewModels.PiesListViewModel
+﻿<div class="container">
+	<div class="row" id="pie">
 
-@{
-	ViewData["Title"] = "Index";
-}
-
-<div class="container">
-	<h1 class="text-center">@Model.CurrentCategory</h1>
-	<div class="row">
-		@foreach (var pie in Model.Pies)
-		{
-			<partial name="_PieOverviewPartial" model="@pie" />
-		}
 	</div>
 </div>
+
+
+
+@section scripts {
+	<script>
+		$(document).ready(function () {
+			LoadMorePies();
+		});
+
+		//$(document).scroll(function () {
+		//	if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+		//		LoadMorePies();
+		//	}
+		//});
+
+		function LoadMorePies() {
+			$.ajax({
+				type: 'GET',
+				url: '/api/Pies',
+				dataType: 'json',
+				success: function (jsonData) {
+					if (jsonData == null) {
+						alert('no data returned');
+						return;
+					}
+
+					$.each(jsonData, function (index, pie) {
+						var pieSummary =
+							'<div class="col-sm-6 col-md-6 col-lg-6 col-12 mb-3">' +
+							'	<img class="img-fluid w-100" src="' + pie.imageThumbnailUrl + '" alt="' + pie.name + 'Thumbnail" />' +
+							'	<div class="figure-caption">' +
+							'		<div class="border border-top-0 p-2">' +
+							'			<h3 class="float-right">' + pie.price + '</h3>' +
+							'			<h3>' +
+							'				<a href="/Pies/Details/' + pie.id + '/">' + pie.name + '</a>' +
+							'			</h3>' +
+							'			<p>' + pie.shortDescription + '</p>' +
+							'			<a class="btn btn-dark" href="/ShoppingCart/AddToShoppingCart/' + pie.id + '/">Add To Cart</a>' +
+							'		</div>' +
+							'	</div>' +
+							'</div>';
+
+						$('#pie').append(pieSummary);
+					});
+				},
+				error: function (ex) {
+					alert(ex);
+				}
+			});
+			return false;
+		}
+	</script>
+}
