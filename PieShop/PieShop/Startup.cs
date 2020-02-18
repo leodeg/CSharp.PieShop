@@ -36,9 +36,17 @@ namespace PieShop
 				options.UseSqlServer(
 					Configuration.GetConnectionString("DefaultConnection")));
 
-			services.AddDefaultIdentity<IdentityUser>(
-					options => options.SignIn.RequireConfirmedAccount = true)
+			services.AddIdentity<IdentityUser, IdentityRole>()
+				.AddDefaultTokenProviders()
+				.AddDefaultUI()
 				.AddEntityFrameworkStores<ApplicationDbContext>();
+
+			services.Configure<IdentityOptions>(options => {
+				options.Password.RequireDigit = true;
+				options.Password.RequiredLength = 8;
+				options.Password.RequireNonAlphanumeric = true;
+				options.User.RequireUniqueEmail = true;
+			});
 
 			services.AddTransient<ICategoryRepository, CategoryRepository>();
 			services.AddTransient<IPieRepository, PieRepository>();
